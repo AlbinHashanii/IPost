@@ -14,6 +14,7 @@ struct CreatePostView: View {
     @State private var title = ""
     @State private var post_description = ""
     @State private var feeling = "Happy"
+    @Binding var isPresented: Bool
     @State private var feelingD: Double = 0.0
     let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm"]
     
@@ -34,6 +35,7 @@ struct CreatePostView: View {
                     Spacer()
                     Button("Create") {
                         DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
+                            isPresented = false
                     }
                 }
           }
@@ -61,7 +63,7 @@ struct CreatePostView: View {
 
 struct CreatePostView_Previews: PreviewProvider {
     static var previews: some View {
-        CreatePostView()
+        CreatePostView(isPresented: .constant(true))
     }
 }
 

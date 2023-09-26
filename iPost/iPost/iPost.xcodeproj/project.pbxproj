@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180659722AC36190000858C7 /* TimeFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180659712AC36190000858C7 /* TimeFormatting.swift */; };
 		182380542AC3453A002BDC9C /* iPostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182380532AC3453A002BDC9C /* iPostApp.swift */; };
 		182380562AC3453A002BDC9C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182380552AC3453A002BDC9C /* ContentView.swift */; };
 		182380582AC3453B002BDC9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182380572AC3453B002BDC9C /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180659712AC36190000858C7 /* TimeFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatting.swift; sourceTree = "<group>"; };
 		182380502AC3453A002BDC9C /* iPost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		182380532AC3453A002BDC9C /* iPostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPostApp.swift; sourceTree = "<group>"; };
 		182380552AC3453A002BDC9C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		1825CA1E2AC34A61001C5055 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				180659712AC36190000858C7 /* TimeFormatting.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 				1823806A2AC3460E002BDC9C /* DataController.swift in Sources */,
 				182380672AC345A2002BDC9C /* PostModel.xcdatamodeld in Sources */,
 				182380542AC3453A002BDC9C /* iPostApp.swift in Sources */,
+				180659722AC36190000858C7 /* TimeFormatting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
