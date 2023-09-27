@@ -14,8 +14,9 @@ struct ContentView: View {
     @State private var isPresentingCreateView = false
     
     @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(entity: Post.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Post.date_created, ascending: false)]) var posts: FetchedResults<Post>
     
-    @State private var posts: [Post] = []
+ 
     var body: some View {
         NavigationView{
         VStack(alignment: .leading){
@@ -53,15 +54,6 @@ struct ContentView: View {
         
     }
     
-    private func fetchData(){
-        let fetchRequest: NSFetchRequest<Post> = Post.fetchRequest()
-    
-        do {
-            self.posts = try managedObjectContext.fetch(fetchRequest)
-        }catch{
-            
-        }
-    }
     
     private func totalPosts() -> Int {
         return 5
