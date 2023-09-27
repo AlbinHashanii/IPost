@@ -22,15 +22,21 @@ struct ContentView: View {
             Text("\(Int(totalPosts())) created").foregroundColor(.gray).padding(.horizontal)
             List {
                 ForEach(posts) { post in
-                    NavigationLink(destination: Text("\(post.title)")){
+                    NavigationLink(destination: Text("\(post.title!)")){
                         HStack{
                             VStack(alignment: .leading, spacing: 6){
-                                Text(post.post_description).bold()
+                                Text("\(post.post_description!)").bold()
+                                
+                                Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.red)
+                                
                             }
+                            Spacer()
+                            Text(calcTimeSince(date: post.date_created!)).foregroundColor(.gray).italic()
                             
                         }
                     }
-                }
+                }.onDelete(perform: deletePost)
+                
             }
             Button("Create new post"){
                 isPresentingCreateView.toggle()
@@ -38,7 +44,13 @@ struct ContentView: View {
                 CreatePostView(isPresented: $isPresentingCreateView)
             }
         }
+        
         }.navigationTitle("iPost")
+    }
+  
+    
+    private func deletePost(offsets: IndexSet){
+        
     }
     
     private func fetchData(){
@@ -46,8 +58,6 @@ struct ContentView: View {
     
         do {
             self.posts = try managedObjectContext.fetch(fetchRequest)
-            if let firstPost = posts.first {
-            }
         }catch{
             
         }
