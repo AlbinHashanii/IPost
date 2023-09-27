@@ -26,10 +26,15 @@ struct ContentView: View {
                     NavigationLink(destination: Text("\(post.title!)")){
                         HStack{
                             VStack(alignment: .leading, spacing: 6){
-                                Text("\(post.post_description!)").bold()
+                                Text("\(post.title!)").bold()
+                                Text("\(post.post_description!)").italic()
                                 
-                                Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.red)
-                                
+                                if post.feeling == "Happy" || post.feeling == "Excited" {
+                                    Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.green)
+                                }else if post.feeling == "Sad" || post.feeling == "Angry"{
+                                    Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.red)
+                                }else {
+                                    Text("\(post.author!) is feeling \(post.feeling!)")         }
                             }
                             Spacer()
                             Text(calcTimeSince(date: post.date_created!)).foregroundColor(.gray).italic()
@@ -56,7 +61,7 @@ struct ContentView: View {
     
     
     private func totalPosts() -> Int {
-        return 5
+        return posts.count
     }
 
 }
