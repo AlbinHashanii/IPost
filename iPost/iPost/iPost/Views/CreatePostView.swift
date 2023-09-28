@@ -35,7 +35,7 @@ struct CreatePostView: View {
                     Spacer()
                     Button("Create") {
                         DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
-                            isPresented = false
+                        isPresented.toggle()
                     }
                 }
           }

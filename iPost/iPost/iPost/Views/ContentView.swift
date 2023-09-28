@@ -12,6 +12,7 @@ import CoreData
 
 struct ContentView: View {
     @State private var isPresentingCreateView = false
+    @State private var showAlert = false;
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(entity: Post.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Post.date_created, ascending: false)]) var posts: FetchedResults<Post>
@@ -44,14 +45,33 @@ struct ContentView: View {
                 }.onDelete(perform: deletePost)
                 
             }
-            Button("Create new post"){
-                isPresentingCreateView.toggle()
-            }.sheet(isPresented: $isPresentingCreateView){
-                CreatePostView(isPresented: $isPresentingCreateView)
+         
+        }
+        .alert(isPresented: $showAlert){
+            Alert(
+                title: Text("Sucess!"),
+                message: Text("Post created"),
+                dismissButton: .default(Text("OK"))
+                )
+            }
+        .navigationTitle("iPost")
+        .toolbar{
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button{
+                    isPresentingCreateView.toggle()
+                } label: {
+                    Label("Create post", systemImage: "plus.circle")
+                }.sheet(isPresented: $isPresentingCreateView){
+                    CreatePostView(isPresented: $isPresentingCreateView)
+                }}
+            ToolbarItem(placement: .navigationBarLeading){
+                EditButton()
             }
         }
+            
+        }
         
-        }.navigationTitle("iPost")
+        
     }
   
     
