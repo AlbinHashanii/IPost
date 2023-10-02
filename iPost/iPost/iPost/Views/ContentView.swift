@@ -52,7 +52,7 @@ struct ContentView: View {
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button{
-                    isPresentingCreateView.toggle()
+                    isPresentingCreateView = true
                 } label: {
                     Label("Create post", systemImage: "plus.circle")
                 }.sheet(isPresented: $isPresentingCreateView){
@@ -70,7 +70,11 @@ struct ContentView: View {
   
     
     private func deletePost(offsets: IndexSet){
-        
+        withAnimation{
+            offsets.map { posts[$0] }.forEach(managedObjectContext.delete)
+            
+            DataController().save(context: managedObjectContext)
+        }
     }
     
     

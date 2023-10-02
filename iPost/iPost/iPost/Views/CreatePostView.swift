@@ -17,42 +17,39 @@ struct CreatePostView: View {
     @Binding var isPresented: Bool
     @State private var feelingD: Double = 0.0
     @State private var showAlert = false
-    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm"]
+    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired"]
     
 
     var body: some View {
-        Form {
-            
-            Section {
-                TextField("Title", text:$title)
-                TextField("Body", text:$post_description)
-                TextField("Author", text: $author)
-            
-            
-            VStack{
-                Slider(value: $feelingD, in: 0...100, step: 20).padding()
-                Text("\(currentEmotion())")
-            }
-            
-            HStack{
-                Spacer()
-                Button("Post"){
-                    DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
-                    isPresented.toggle()
-                    showAlert.toggle()
-                }.alert(isPresented: $showAlert){
-                    Alert(
-                        title: Text("Sucess"),
-                        message: Text("Post created successfully"),
-                        dismissButton: .default(Text("OK"))
-                    )
+        NavigationView {
+            Form{
+                Section{
+                    TextField("Title", text: $title)
+                    TextField("Body", text:$post_description)
+                    TextField("Author", text:$author)
+                    
+                    VStack{
+                        Slider(value: $feelingD, in: 0...100, step: 20).padding()
+                        Text("\(currentEmotion())")
+                    }
+                    
+                    VStack{
+                        Spacer()
+                        Button("Post"){
+                            DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
+                            isPresented = false
+                        }
+                    }
                 }
+            }.onChange(of: feelingD) {
+                newValue in feeling = currentEmotion()
             }
+            .navigationBarItems(trailing: Button("Cancel"){
+                isPresented = false
+            })
+            .navigationTitle("New post")
         }
-            
-        }.onChange(of: feelingD){ newValue in
-            feeling = currentEmotion()
-        }
+    
     }
     
     func currentEmotion() -> String {
