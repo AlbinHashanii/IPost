@@ -16,29 +16,39 @@ struct CreatePostView: View {
     @State private var feeling = "Happy"
     @Binding var isPresented: Bool
     @State private var feelingD: Double = 0.0
+    @State private var showAlert = false
     let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm"]
     
 
     var body: some View {
         Form {
-            Section {
-                TextField("Title", text: $title)
-                TextField("Body", text: $post_description)
-                TextField("Authot", text: $author)
             
-                VStack {
-                    Slider(value: $feelingD, in: 0...100, step: 20).padding()
-                    Text("\(currentEmotion())")
+            Section {
+                TextField("Title", text:$title)
+                TextField("Body", text:$post_description)
+                TextField("Author", text: $author)
+            
+            
+            VStack{
+                Slider(value: $feelingD, in: 0...100, step: 20).padding()
+                Text("\(currentEmotion())")
+            }
+            
+            HStack{
+                Spacer()
+                Button("Post"){
+                    DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
+                    isPresented.toggle()
+                    showAlert.toggle()
+                }.alert(isPresented: $showAlert){
+                    Alert(
+                        title: Text("Sucess"),
+                        message: Text("Post created successfully"),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
-                
-                HStack {
-                    Spacer()
-                    Button("Create") {
-                        DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
-                        isPresented.toggle()
-                    }
-                }
-          }
+            }
+        }
             
         }.onChange(of: feelingD){ newValue in
             feeling = currentEmotion()
