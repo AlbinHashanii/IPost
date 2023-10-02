@@ -13,6 +13,7 @@ import CoreData
 struct ContentView: View {
     @State private var isPresentingCreateView = false
     @State private var isPresentingEditView = false
+    @State private var showAlert = false
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(entity: Post.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Post.date_created, ascending: false)]) var posts: FetchedResults<Post>
@@ -52,11 +53,11 @@ struct ContentView: View {
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button{
-                    isPresentingCreateView = true
+                    isPresentingCreateView.toggle()
                 } label: {
                     Label("Create post", systemImage: "plus.circle")
                 }.sheet(isPresented: $isPresentingCreateView){
-                    CreatePostView(isPresented: $isPresentingCreateView)
+                    CreatePostView(isPresentedView: $isPresentingCreateView, showAlert: $showAlert)
                 }}
             ToolbarItem(placement: .navigationBarLeading){
                 EditButton()
