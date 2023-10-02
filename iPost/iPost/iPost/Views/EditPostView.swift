@@ -10,9 +10,9 @@ import SwiftUI
 struct EditPostView: View {
     @Environment (\.managedObjectContext) var managedObjectContext
     
-    var post: FetchedResults<Post>.Element
+    var post: Post
     
-    @Binding var isPresented: Bool
+    @Binding var isPresentedEdit: Bool
     
     @State private var title = ""
     @State private var post_description = ""
@@ -30,7 +30,7 @@ struct EditPostView: View {
                     }
                 TextField("\(post.post_description!)", text: $post_description)
                     .onAppear {
-                        post_description = post.description
+                        post_description = post.post_description!
                     }
             
                 VStack{

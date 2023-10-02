@@ -1,14 +1,14 @@
-
 import SwiftUI
+
 struct CreatePostView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @State private var author = ""
     @State private var title = ""
     @State private var post_description = ""
-    @State private var feelingD: Double = 0.0
+    @State private var selectedFeelingIndex = 0
     @Binding var isPresentedView: Bool
-    @Binding var showAlert: Bool
-    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired"]
+
+    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired", "Surprised", "Loved"]
     
     var body: some View {
         NavigationView {
@@ -19,45 +19,39 @@ struct CreatePostView: View {
                     TextField("Author", text: $author)
                     
                     VStack {
-                        Slider(value: $feelingD, in: 0...100, step: 15).padding()
-                        Text("\(currentEmotion())")
+                        Text("How are you feeling?")
+                        Picker("Feeling", selection: $selectedFeelingIndex) {
+                            ForEach(0..<emotions.count, id: \.self) { index in
+                                Text(emotions[index]).tag(index)
+                            }
+                        }.pickerStyle(SegmentedPickerStyle())
                     }
                     
                     VStack {
-                        Spacer()
-                        Button("Post") {
-                            DataController().addPost(author: author, title: title, post_description: post_description, feeling: currentEmotion(), context: managedObjectContext)
-                            showAlert = true
-                        }.alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text("Post created"),
-                                message: Text("Post posted successfully"),
-                                dismissButton: .default(Text("OK"))
-                            )
-                        }
+                        Slider(value: Binding(
+                            get: { Double(selectedFeelingIndex) },
+                            set: { newValue in selectedFeelingIndex = Int(newValue) }
+                        ), in: 0.0...(Double(emotions.count - 1)))
+                        .padding(.horizontal)
+                        .accentColor(Color(emotions[selectedFeelingIndex]))
+                        Text("\(emotions[selectedFeelingIndex])")
                     }
+                
+                    
+                HStack{
+                        Button("Create"){
+                            DataController().addPost(author: author, title: title, post_description: post_description, feeling: emotions[selectedFeelingIndex], context: managedObjectContext)
+                                isPresentedView = false
                 }
-            }.navigationBarItems(trailing: Button("Cancel") {
-                isPresentedView.toggle()
-            })
+            }.navigationBarItems(
+                leading: Button("Cancel") {
+                    isPresentedView.toggle() // Close the view when cancel is pressed
+                },
+                trailing: EmptyView()
+            )
             .navigationTitle("New post")
-        }
-    }
-    
-    func currentEmotion() -> String {
-        switch Int(feelingD) {
-        case 0..<20:
-            return emotions[0]
-        case 20..<40:
-            return emotions[1]
-        case 40..<60:
-            return emotions[2]
-        case 60..<80:
-            return emotions[3]
-        default:
-            return emotions[4]
+            }
         }
     }
 }
-
-
+}
