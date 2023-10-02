@@ -12,7 +12,7 @@ import CoreData
 
 struct ContentView: View {
     @State private var isPresentingCreateView = false
-
+    @State private var isPresentingEditView = false
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(entity: Post.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Post.date_created, ascending: false)]) var posts: FetchedResults<Post>
@@ -24,7 +24,7 @@ struct ContentView: View {
             Text("\(Int(totalPosts())) created").foregroundColor(.gray).padding(.horizontal)
             List {
                 ForEach(posts) { post in
-                    NavigationLink(destination: Text("\(post.title!)")){
+                    NavigationLink(destination: EditPostView(managedObjectContext: _managedObjectContext, post: post, isPresented: $isPresentingEditView )){
                         HStack{
                             VStack(alignment: .leading, spacing: 6){
                                 Text("\(post.title!)").bold()

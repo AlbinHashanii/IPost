@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		180659722AC36190000858C7 /* TimeFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180659712AC36190000858C7 /* TimeFormatting.swift */; };
+		18227A8A2ACB085A0009865B /* EditPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18227A892ACB085A0009865B /* EditPostView.swift */; };
 		182380542AC3453A002BDC9C /* iPostApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182380532AC3453A002BDC9C /* iPostApp.swift */; };
 		182380562AC3453A002BDC9C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182380552AC3453A002BDC9C /* ContentView.swift */; };
 		182380582AC3453B002BDC9C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182380572AC3453B002BDC9C /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		180659712AC36190000858C7 /* TimeFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatting.swift; sourceTree = "<group>"; };
+		18227A892ACB085A0009865B /* EditPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPostView.swift; sourceTree = "<group>"; };
 		182380502AC3453A002BDC9C /* iPost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		182380532AC3453A002BDC9C /* iPostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iPostApp.swift; sourceTree = "<group>"; };
 		182380552AC3453A002BDC9C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			children = (
 				182380552AC3453A002BDC9C /* ContentView.swift */,
 				1825CA242AC34ACB001C5055 /* CreatePostView.swift */,
+				18227A892ACB085A0009865B /* EditPostView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				1823806A2AC3460E002BDC9C /* DataController.swift in Sources */,
 				182380672AC345A2002BDC9C /* PostModel.xcdatamodeld in Sources */,
 				182380542AC3453A002BDC9C /* iPostApp.swift in Sources */,
+				18227A8A2ACB085A0009865B /* EditPostView.swift in Sources */,
 				180659722AC36190000858C7 /* TimeFormatting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

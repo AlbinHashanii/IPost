@@ -29,7 +29,7 @@ struct CreatePostView: View {
                     TextField("Author", text:$author)
                     
                     VStack{
-                        Slider(value: $feelingD, in: 0...100, step: 20).padding()
+                        Slider(value: $feelingD, in: 0...100, step: 15).padding()
                         Text("\(currentEmotion())")
                     }
                     
@@ -37,7 +37,6 @@ struct CreatePostView: View {
                         Spacer()
                         Button("Post"){
                             DataController().addPost(author: author, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
-                            isPresented = false
                         }
                     }
                 }
