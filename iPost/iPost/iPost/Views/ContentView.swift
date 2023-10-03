@@ -38,6 +38,8 @@ struct ContentView: View {
                                         Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.red)
                                     } else if post.feeling == "Calm" || post.feeling == "Tired" {
                                         Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.yellow)
+                                    }else if post.feeling == "Surprised" || post.feeling == "Loved" {
+                                        Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.pink)
                                     }
                                     else {
                                         Text("\(post.author!) is feeling \(post.feeling!)")
