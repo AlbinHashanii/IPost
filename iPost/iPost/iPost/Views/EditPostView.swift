@@ -4,20 +4,20 @@
 //
 //  Created by Albin Hashani on 9/27/23.
 //
-import SwiftUI
-import CoreData
+import SwiftUI  
 
 struct EditPostView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment (\.managedObjectContext) var managedObjectContext
     
     var post: Post
     
     @Binding var isPresentedEdit: Bool
-    
+    @State private var showAlertEdit = false
     @State private var title = ""
     @State private var post_description = ""
     @State private var selectedFeelingIndex = 0
-    
+    @Binding var showEditPostAlert: Bool
+
     let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired", "Surprised", "Loved"]
     
     var body: some View {
@@ -54,14 +54,19 @@ struct EditPostView: View {
                     Spacer()
                     Button("Submit"){
                         DataController().editPost(post: post, title: title, post_description: post_description, feeling: emotions[selectedFeelingIndex], context: managedObjectContext)
-                        
-                        // Set the alert message here
-                        isPresentedEdit = false
-                        // Set the alert message here
+                        isPresentedEdit.toggle()
+                        showEditPostAlert = true
                     }
                     Spacer()
                 }
             }
+        }
+        .alert(isPresented: $showEditPostAlert) {
+            Alert(
+                title: Text("Post Edited"),
+                message: Text("Your post has been edited successfully."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }
