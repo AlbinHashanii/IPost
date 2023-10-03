@@ -1,3 +1,10 @@
+//
+//  CreatePostView.swift
+//  iPost
+//
+//  Created by Albin Hashani on 9/26/23.
+//
+
 import SwiftUI
 
 struct CreatePostView: View {
@@ -7,6 +14,7 @@ struct CreatePostView: View {
     @State private var post_description = ""
     @State private var selectedFeelingIndex = 0
     @Binding var isPresentedView: Bool
+    @Binding var showCreatePostAlert: Bool
 
     let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired", "Surprised", "Loved"]
     
@@ -41,16 +49,23 @@ struct CreatePostView: View {
                 HStack{
                         Button("Create"){
                             DataController().addPost(author: author, title: title, post_description: post_description, feeling: emotions[selectedFeelingIndex], context: managedObjectContext)
-                                isPresentedView = false
+                                showCreatePostAlert = true
                 }
             }.navigationBarItems(
                 leading: Button("Cancel") {
-                    isPresentedView.toggle() // Close the view when cancel is pressed
+                    isPresentedView.toggle()
                 },
                 trailing: EmptyView()
             )
             .navigationTitle("New post")
             }
+        }
+        .alert(isPresented: $showCreatePostAlert) {
+            Alert(
+                title: Text("Post Created"),
+                message: Text("Your post has been created successfully."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

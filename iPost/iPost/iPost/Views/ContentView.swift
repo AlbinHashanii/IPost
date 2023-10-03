@@ -4,13 +4,15 @@
 //
 //  Created by Albin Hashani on 9/26/23.
 //
+
 import SwiftUI
 import CoreData
 
 struct ContentView: View {
     @State private var isPresentingCreateView = false
     @State private var isPresentingEditView = false
-    @State private var createPostAlert = false // Add this @State variable
+    @State private var createPostAlert = false
+    @State private var isCreatingPost = false
     
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(entity: Post.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Post.date_created, ascending: false)]) var posts: FetchedResults<Post>
@@ -24,7 +26,7 @@ struct ContentView: View {
                 
                 List {
                     ForEach(posts) { post in
-                        NavigationLink(destination: EditPostView(managedObjectContext: _managedObjectContext, post: post, isPresentedEdit: $isPresentingEditView)) {
+                        NavigationLink(destination: EditPostView(managedObjectContext: _managedObjectContext, post: post, isPresentedEdit: $isPresentingEditView, showEditPostAlert: $createPostAlert)) {
                             HStack {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text("\(post.title!)").bold()
@@ -34,7 +36,10 @@ struct ContentView: View {
                                         Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.green)
                                     } else if post.feeling == "Sad" || post.feeling == "Angry" {
                                         Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.red)
-                                    } else {
+                                    } else if post.feeling == "Calm" || post.feeling == "Tired" {
+                                        Text("\(post.author!) is feeling \(post.feeling!)").foregroundColor(.yellow)
+                                    }
+                                    else {
                                         Text("\(post.author!) is feeling \(post.feeling!)")
                                     }
                                 }
@@ -50,7 +55,7 @@ struct ContentView: View {
                 .listStyle(PlainListStyle())
                 
                 Button(action: {
-                    isPresentingCreateView.toggle()
+                    isCreatingPost.toggle()
                 }) {
                     Label("Create Post", systemImage: "plus.circle")
                         .font(.title2)
@@ -59,31 +64,36 @@ struct ContentView: View {
                         .background(Color.blue)
                         .cornerRadius(12)
                 }
-                .sheet(isPresented: $isPresentingCreateView) {
-                    CreatePostView(
-                        isPresentedView: $isPresentingCreateView)
+                .sheet(isPresented: $isCreatingPost) {
+                    CreatePostView(isPresentedView: $isCreatingPost, showCreatePostAlert: $createPostAlert)
+                        .environment(\.managedObjectContext, managedObjectContext)
                 }
                 .padding()
-                
             }
             .navigationBarTitle("iPost", displayMode: .automatic)
             .navigationBarItems(
                 leading: EditButton()
             )
-            .alert(isPresented: $createPostAlert) {
-                Alert(
-                    title: Text("Post created"),
-                    message: Text("Post posted successfully"),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
+        }
+        .alert(isPresented: $createPostAlert) {
+            Alert(
+                title: Text("Post Created"),
+                message: Text("Your post has been created successfully."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
     private func deletePost(offsets: IndexSet) {
         withAnimation {
-            offsets.map { posts[$0] }.forEach(managedObjectContext.delete)
-            DataController().save(context: managedObjectContext)
+            offsets.map { posts[$0] }.forEach { post in
+                managedObjectContext.delete(post)
+            }
+            do {
+                try managedObjectContext.save()
+            } catch {
+                print("Error deleting post: \(error)")
+            }
         }
     }
     

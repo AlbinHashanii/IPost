@@ -2,13 +2,13 @@
 //  EditPostView.swift
 //  iPost
 //
-//  Created by Albin Hashani on 10/2/23.
+//  Created by Albin Hashani on 9/27/23.
 //
-
 import SwiftUI
+import CoreData
 
 struct EditPostView: View {
-    @Environment (\.managedObjectContext) var managedObjectContext
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     var post: Post
     
@@ -16,10 +16,9 @@ struct EditPostView: View {
     
     @State private var title = ""
     @State private var post_description = ""
-    @State private var feeling = "Happy"
-    @State private var feelingD: Double = 0.0
-    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired"]
+    @State private var selectedFeelingIndex = 0
     
+    let emotions = ["Happy", "Sad", "Angry", "Excited", "Calm", "Tired", "Surprised", "Loved"]
     
     var body: some View {
         Form {
@@ -34,39 +33,35 @@ struct EditPostView: View {
                     }
             
                 VStack{
-                    Text("Feeling:  \(currentEmotion())")
-                    Slider(value: $feelingD, in: 0...100, step: 15)
-                    Text("\(currentEmotion())")
+                    Text("How are you feeling?")
+                    Picker("Feeling", selection: $selectedFeelingIndex) {
+                        ForEach(0..<emotions.count, id: \.self) { index in
+                            Text(emotions[index]).tag(index)
+                        }
+                    }.pickerStyle(SegmentedPickerStyle())
+                    
+                    Slider(value: Binding(
+                        get: { Double(selectedFeelingIndex) },
+                        set: { newValue in selectedFeelingIndex = Int(newValue) }
+                    ), in: 0.0...(Double(emotions.count - 1)), step: 1.0)
+                    .padding(.horizontal)
+                    .accentColor(Color(emotions[Int(selectedFeelingIndex)]))
+                    
+                    Text("\(emotions[selectedFeelingIndex])")
                 }.padding()
                 
                 HStack {
                     Spacer()
                     Button("Submit"){
-                        DataController().editPost(post: post, title: title, post_description: post_description, feeling: feeling, context: managedObjectContext)
+                        DataController().editPost(post: post, title: title, post_description: post_description, feeling: emotions[selectedFeelingIndex], context: managedObjectContext)
+                        
+                        // Set the alert message here
+                        isPresentedEdit = false
+                        // Set the alert message here
                     }
                     Spacer()
                 }
-                
-                
             }
         }
-    
-    
     }
-    
-    func currentEmotion() -> String {
-        switch Int(feelingD) {
-        case 0..<20:
-           return emotions[0]
-        case 20..<40:
-            return emotions[1]
-        case 40..<60:
-            return emotions[2]
-        case 60..<80:
-            return emotions[3]
-        default:
-            return emotions[4]
-        }
-    }
-    
 }
